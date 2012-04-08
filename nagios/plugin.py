@@ -57,34 +57,6 @@ LOG1 = 102 # Single line, additional information (eg list processes that fail)
 LOG2 = 101 # Multi line, configuration debug output (eg ps command used)
 LOG3 = 100 # Lots of detail for plugin problem diagnosis
 
-def camel_to_under(word):
-    """
-    Converts standard CamelCase (class) names into lower-words delimited 
-    by underscores, using a regexp following these rules:
-    
-    1. Never match the first character
-    2. Match an uppercase character, if it comes after a lowercase letter
-    3. Match a number, if it is followed by a lowercase letter, unless it 
-       comes after another number
-       
-    Each match is prefixed by an underscore, and all caps are lowered before 
-    returning the result. 
-
-    >>> camel_to_under('camelToUnder')
-    'camel_to_under'
-    >>> camel_to_under('CamelToUnder')
-    'camel_to_under'
-    >>> camel_to_under('CamelToUnder2')
-    'camel_to_under2'
-    >>> camel_to_under('CamelToUnder2nd')
-    'camel_to_under_2nd'
-    """
-    
-    pattern = re.compile(
-            r"(?<!^)(((?<=[a-z])[A-Z])|((?<![0-9])[0-9](?=[a-z])))"
-    )
-    return pattern.subn(r"_\1", word, 0)[0].lower()
-
 class NagiosPluginError(Exception): pass
 
 class NagiosPerfLabel(object):
@@ -480,6 +452,34 @@ class UnhandledExceptionHandler(object):
                 instance.die(UNKN, self._fmt % traceback.format_exc())
                 
         return wrapper
+
+def camel_to_under(word):
+    """
+    Converts standard CamelCase (class) names into lower-words delimited 
+    by underscores, using a regexp following these rules:
+    
+    1. Never match the first character
+    2. Match an uppercase character, if it comes after a lowercase letter
+    3. Match a number, if it is followed by a lowercase letter, unless it 
+       comes after another number
+       
+    Each match is prefixed by an underscore, and all caps are lowered before 
+    returning the result. 
+
+    >>> camel_to_under('camelToUnder')
+    'camel_to_under'
+    >>> camel_to_under('CamelToUnder')
+    'camel_to_under'
+    >>> camel_to_under('CamelToUnder2')
+    'camel_to_under2'
+    >>> camel_to_under('CamelToUnder2nd')
+    'camel_to_under_2nd'
+    """
+    
+    pattern = re.compile(
+            r"(?<!^)(((?<=[a-z])[A-Z])|((?<![0-9])[0-9](?=[a-z])))"
+    )
+    return pattern.subn(r"_\1", word, 0)[0].lower()
 
 class NagiosPlugin(object):
     """
