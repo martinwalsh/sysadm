@@ -61,7 +61,6 @@ def seconds_to_human(s, float_secs=True):
     >>> seconds_to_human(7200)
     '2 hours'
     """
-    y, s = divmod(s, 31556952)
     m, s = divmod(s, 60)
     h, m = divmod(m, 60)
     d, h = divmod(h, 24)
@@ -71,7 +70,6 @@ def seconds_to_human(s, float_secs=True):
         return s % n
     
     out = []
-    if y: out.append(pluralize('%d year', y))
     if d: out.append(pluralize('%d day', d))
     if h: out.append(pluralize('%d hour', h))
     if m: out.append(pluralize('%d minute', m))
